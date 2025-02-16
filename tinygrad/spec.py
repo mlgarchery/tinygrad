@@ -35,7 +35,7 @@ tensor_uop_spec = PatternMatcher([
 
   # ASSIGN changes the value of a realized buffer
   (UPat(Ops.ASSIGN, name="assign", src=(UPat.var("target"), UPat.var("new_val"))),
-   lambda assign,target,new_val: target.is_realized and (assign.dtype == target.dtype == new_val.dtype)),
+   lambda assign,target,new_val: assign.dtype == target.dtype == new_val.dtype),
 ])
 
 # ***** uop type spec *****

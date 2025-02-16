@@ -66,6 +66,8 @@ sym = symbolic_simple+PatternMatcher([
   # substitute BITCAST/CONTIGUOUS with BUFFER_VIEW on DISK
   (UPat((Ops.BITCAST, Ops.CONTIGUOUS), name="root"),
   lambda root: root.replace(op=Ops.BUFFER_VIEW) if isinstance(root.device, str) and root.device.startswith("DISK") else None),
+  # ASSIGN to unrealized target is replace
+  (UPat(Ops.ASSIGN, src=(UPat.var("target"), UPat.var("new_val"))), lambda target,new_val: new_val if target.base.realized is None else None),
 ])
 
 remove_movement_ops = merge_views+PatternMatcher([
